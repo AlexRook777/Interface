@@ -271,6 +271,7 @@ class App(customtkinter.CTk):
 
     # Function to output log messages to the log box        
     def output_log(self, message):
+        
         self.log_box.configure(state="normal")  
         self.log_box.insert("end", message + "\n")
         self.log_box.configure(state="disabled")
@@ -299,6 +300,7 @@ class App(customtkinter.CTk):
                 self.contacts = {}
         except Exception as e:
             print(e)
+            
 
 
     def on_closing(self):
