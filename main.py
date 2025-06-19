@@ -1,7 +1,7 @@
 import customtkinter  
 import tkinter
 import json
-import os
+from pathlib import Path
         
 customtkinter.set_appearance_mode("System")
 customtkinter.set_default_color_theme("blue") 
@@ -263,7 +263,7 @@ class App(customtkinter.CTk):
                 self.contact_box.insert("end", f"{name}: {phone}\n")
         self.contact_box.configure(state="disabled") 
         self.contact_box.see("end")
-
+        
         if contacts_to_show != self.contacts:
             self.contact_box_label.configure(text="Contact list (filtered by last operation):")
         else:
@@ -279,7 +279,8 @@ class App(customtkinter.CTk):
     def save_contacts(self):
         # Save contacts to a JSON file
         try:
-            with open('phonebook.json', 'w', encoding='koi8-u') as f:
+            file_path = Path('phonebook.json')
+            with file_path.open('w', encoding='koi8-u') as f:
                 json.dump(self.contacts, f, indent=4, ensure_ascii=False)
         except Exception as e:
             self.output_log(f"Error saving contacts: {repr(e)}")
@@ -288,10 +289,12 @@ class App(customtkinter.CTk):
         # Load contacts from JSON file
         try:
             try:
-                os.stat('phonebook.json')
-                with open('phonebook.json', 'r', encoding='koi8-u') as f:
-                    content = f.read().strip()
-                    self.contacts = json.loads(content) if content else {}
+                file_path = Path('phonebook.json')
+                if file_path.exists():
+                    # Open existing file
+                    with file_path.open('r', encoding='koi8-u') as f:
+                        content = f.read()
+                        self.contacts = json.loads(content) if content else {}
             except FileNotFoundError:
                 self.contacts = {}
         except Exception as e:
