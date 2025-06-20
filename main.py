@@ -285,7 +285,7 @@ class App(customtkinter.CTk):
                 json.dump(self.contacts, f, indent=4, ensure_ascii=False)
         except Exception as e:
             self.output_log(f"Error saving contacts: {repr(e)}")
-
+            
     def load_contacts(self):
         # Load contacts from JSON file
         try:
